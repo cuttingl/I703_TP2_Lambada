@@ -3,6 +3,9 @@ package fr.usmb.m1isc.compilation.tp;
 import java_cup.runtime.Symbol;
 import java.util.HashMap;
 
+import fr.usmb.m1isc.compilation.tp.Arbre;
+import fr.usmb.m1isc.compilation.tp.Arbre.NodeType;
+
 /* inclusion du code */
 
 action code {: 
@@ -39,7 +42,7 @@ terminal PLUS, MOINS, MOINS_UNAIRE, MUL, DIV, MOD, NOT, OR, AND, PAR_G, PAR_D, S
 terminal Integer ENTIER;
 terminal String IDENT;
 /* non terminaux */
-non terminal program, sequence, expression, expr;
+non terminal Arbre program, sequence, expression, expr;
 
 precedence nonassoc OUTPUT;
 precedence right OR;
@@ -58,7 +61,7 @@ program ::=
 	;
 
 // une sequence est une suite d'instructions separes par des point virgules	
-sequence ::= expression:e1 SEMI sequence:e2
+sequence ::= expression:e1 SEMI sequence:e2 {:RESULT = new Arbre(NodeType.ENTIER, null, e1, e2);:}
 	 	   | expression:e   
 	 	   |
 	 	   ;
@@ -76,10 +79,10 @@ expr ::= NOT:op expr:e
 	   | expr:e1 AND expr:e2
 	   | expr:e1 OR expr:e2
 	   | expr:e1 EGAL expr:e2
-	   | expr:e1 GT expr:e2
-	   | expr:e1 GTE expr:e2
-	   | expr:e1 PLUS expr:e2
-	   | expr:e1 MOINS expr:e2
+	   | expr:e1 GT expr:e2 {:RESULT = new Arbre(NodeType.GT, null, e1, e2);:}
+	   | expr:e1 GTE expr:e2 {:RESULT = new Arbre(NodeType.GTE, null, e1, e2);:}
+	   | expr:e1 PLUS expr:e2 {:RESULT = new Arbre(NodeType.PLUS, null, e1, e2);:}
+	   | expr:e1 MOINS expr:e2 {:RESULT = new Arbre(NodeType.MOINS, null, e1, e2);:}
 	   | expr:e1 MUL expr:e2
 	   | expr:e1 DIV expr:e2
 	   | expr:e1 MOD expr:e2
@@ -87,7 +90,7 @@ expr ::= NOT:op expr:e
 	   | OUTPUT expr:e
 	   | INPUT
 	   | NIL
-	   | ENTIER:n
+	   | ENTIER:n {:RESULT = new Arbre(NodeType.ENTIER, n); :}
 	   | IDENT:id
 	   | PAR_G sequence:e PAR_D
 	   ;
