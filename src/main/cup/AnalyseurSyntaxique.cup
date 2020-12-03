@@ -57,7 +57,7 @@ precedence left MOINS_UNAIRE;
 /* grammaire */
 // un pg est une sequence d'insctions terminee par point
 program ::= 
-	sequence:s POINT  {: RESULT = s; :}
+	sequence:s {:RESULT = s; System.out.println(s.toString()); :} POINT
 	;
 
 // une sequence est une suite d'instructions separes par des point virgules	
@@ -68,14 +68,14 @@ sequence ::= expression:e1 SEMI sequence:e2 {:RESULT = new Arbre(NodeType.SEMI, 
 
 // une expession est soit une affectation ,une 			 
 expression ::= expr:e  {: RESULT = e; :}
-             | LET IDENT:nom EGAL expr:e  				
-             | WHILE expr:cond DO expression:e 
-             | IF expr:cond THEN expression:a1 ELSE expression:a2 
+             | LET IDENT:nom EGAL expr:e  {: RESULT = new Arbre(NodeType.LET, " let ", new Arbre(NodeType.IDENT, nom, null, null), e); :}
+             | WHILE expr:cond DO expression:e {:RESULT = new Arbre(NodeType.WHILE, " while ", cond, e); :}
+             | IF expr:cond THEN expression:a1 ELSE expression:a2 {: RESULT = new Arbre(NodeType.IF, " if ", cond, new Arbre(NodeType.THEN, " then ", a1, a2)); :}
              | error // reprise d'erreurs
 			 ;
 
 // 
-expr ::= NOT:op expr:e {:RESULT = new Arbre(NodeType.NOT, "not", e1, e2);:}
+expr ::= NOT:op expr:e {:RESULT = new Arbre(NodeType.NOT, "not", e, null);:}
 	   | expr:e1 AND expr:e2 {:RESULT = new Arbre(NodeType.AND, "&", e1, e2);:}
 	   | expr:e1 OR expr:e2 {:RESULT = new Arbre(NodeType.OR, "or", e1, e2);:}
 	   | expr:e1 EGAL expr:e2 {:RESULT = new Arbre(NodeType.EGAL, "==", e1, e2);:}

@@ -55,21 +55,22 @@ public class Arbre {
 
 
     public String toString() {
-        /*StringBuilder res = new StringBuilder("");
-        switch (type) {
-            case ENTIER :
-                res.append(this.value.toString());
-                break;
-            default : res.append("????");
+        StringBuilder res = new StringBuilder("");
+        if(this.getFg() != null) {
+            if(this.getFd() != null) {
+                res.append("(" + this.getValue() + " " + this.getFg().toString() + this.getFd().toString() + ")");
+            } else {
+                res.append("(" + this.getValue() + " " + this.getFg().toString() + ")");
+            }
         }
-        if (fg != null || fd != null) {
-            res.append('(');
-            if (fg != null) res.append(fg); else res.append("null");
-            res.append(", ");
-            if (fd != null) res.append(fd); else res.append("null");
-            res.append(')');
-        }*/
-        String res = this.type.toString() + this.fg.toString() + this.fd.toString();
+        else {
+            if(this.getFd() != null) {
+                res.append("(" + this.getValue() + " . " + this.getFd().toString() + ")");
+            }
+            else {
+                res.append(this.getValue() + " ");
+            }
+        }
         return res.toString();
     }
 }
