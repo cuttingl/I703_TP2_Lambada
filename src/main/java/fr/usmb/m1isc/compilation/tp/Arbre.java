@@ -54,10 +54,7 @@ public class Arbre {
     }
 
     public boolean isaleaf(){
-        if(this.fg == null && this.fd == null){
-            return true;
-        }
-        else return false;
+        return (this.fg == null && this.fd == null);
     }
 
     public String toString() {
