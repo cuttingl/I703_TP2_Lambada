@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 
 public class Main {
-
 	public static void main(String[] args) throws Exception  {
 		 LexicalAnalyzer yy;
 		 if (args.length > 0)
@@ -13,7 +12,10 @@ public class Main {
 		        yy = new LexicalAnalyzer(new InputStreamReader(System.in)) ;
 		@SuppressWarnings("deprecation")
 		parser p = new parser (yy);
-		System.out.println(p.parse( ).value);
+		Arbre a = (Arbre) p.parse().value;
+		System.out.println(a.toString());
+		Asm asm = new Asm();
+		asm.createAsmfile(a, "arbre.ASM");
 	}
 
 }

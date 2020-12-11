@@ -53,6 +53,12 @@ public class Arbre {
         this.format = format;
     }
 
+    public boolean isaleaf(){
+        if(this.fg == null && this.fd == null){
+            return true;
+        }
+        else return false;
+    }
 
     public String toString() {
         StringBuilder res = new StringBuilder("");
